@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jasmine Manders — Interview Preparation | Go Beyond</title>
+<style>
+  :root {
+    --dark: #0f2d35;
+    --teal: #1aacb0;
+    --light-teal: #e6f7f7;
+    --amber: #fff3cd;
+    --green: #d4edda;
+    --red: #f8d7da;
+    --white: #ffffff;
+    --light-grey: #f5f7f7;
+    --mid-grey: #e8eeee;
+    --text: #1a2e33;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', Arial, sans-serif; background: var(--light-grey); color: var(--text); line-height: 1.6; }
+  .hero { background: var(--dark); color: var(--white); padding: 48px 32px 36px; }
+  .hero-inner { max-width: 900px; margin: 0 auto; }
+  .hero .tag { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--teal); margin-bottom: 12px; }
+  .hero h1 { font-size: 2rem; font-weight: 700; line-height: 1.2; margin-bottom: 8px; }
+  .hero .subtitle { font-size: 1rem; color: #c8dede; margin-bottom: 20px; }
+  .hero-meta { display: flex; gap: 24px; flex-wrap: wrap; font-size: 0.85rem; color: #9bc4c4; }
+  .hero-meta span::before { content: '→ '; color: var(--teal); }
+  .nav-bar { background: var(--teal); position: sticky; top: 0; z-index: 100; }
+  .nav-inner { max-width: 900px; margin: 0 auto; display: flex; overflow-x: auto; }
+  .nav-inner a { color: var(--white); text-decoration: none; padding: 12px 18px; font-size: 0.82rem; font-weight: 600; white-space: nowrap; transition: background 0.2s; }
+  .nav-inner a:hover { background: rgba(0,0,0,0.15); }
+  .main { max-width: 900px; margin: 0 auto; padding: 32px 20px 64px; }
+  .section { margin-bottom: 40px; }
+  .section-title { font-size: 1.3rem; font-weight: 700; color: var(--dark); border-left: 4px solid var(--teal); padding-left: 14px; margin-bottom: 20px; }
+  .section-intro { font-size: 0.95rem; color: #3a5a60; margin-bottom: 20px; line-height: 1.7; }
+  .card { background: var(--white); border-radius: 10px; padding: 24px; margin-bottom: 16px; box-shadow: 0 1px 4px rgba(0,0,0,0.06); border: 1px solid #dde8e8; }
+  .card h3 { font-size: 1rem; font-weight: 700; color: var(--dark); margin-bottom: 10px; }
+  .card p, .card li { font-size: 0.92rem; color: #3a5a60; line-height: 1.7; }
+  .card ul { padding-left: 18px; margin-top: 8px; }
+  .card li { margin-bottom: 6px; }
+  .card-teal { background: var(--light-teal); border-color: var(--teal); }
+  .card-amber { background: var(--amber); border-color: #e6c84a; }
+  .card-green { background: var(--green); border-color: #8bc34a; }
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media(max-width:640px){ .two-col { grid-template-columns: 1fr; } }
+  .star-box { background: var(--white); border-radius: 10px; border: 1px solid #dde8e8; overflow: hidden; margin-bottom: 24px; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+  .star-box-header { background: var(--dark); color: var(--white); padding: 14px 20px; font-weight: 700; font-size: 0.95rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; }
+  .star-box-header .q { font-size: 0.82rem; color: #9bc4c4; }
+  .star-row { display: grid; grid-template-columns: 90px 1fr; border-bottom: 1px solid #eef2f2; }
+  .star-row:last-child { border-bottom: none; }
+  .star-label { background: var(--light-teal); color: var(--dark); font-weight: 700; font-size: 0.82rem; padding: 14px 12px; display: flex; align-items: center; justify-content: center; text-align: center; border-right: 1px solid #dde8e8; text-transform: uppercase; letter-spacing: 1px; }
+  .star-content { padding: 14px 18px; font-size: 0.9rem; color: #3a5a60; line-height: 1.6; }
+  .highlight { background: var(--dark); color: var(--white); border-radius: 10px; padding: 24px; margin-bottom: 20px; }
+  .highlight h3 { color: var(--teal); font-size: 1rem; margin-bottom: 12px; }
+  .highlight p, .highlight li { font-size: 0.9rem; line-height: 1.7; color: #c8dede; }
+  .highlight ul { padding-left: 18px; margin-top: 8px; }
+  .highlight li { margin-bottom: 6px; }
+  .person-card { background: var(--white); border-radius: 10px; border: 1px solid #dde8e8; padding: 20px 24px; margin-bottom: 16px; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+  .person-card h3 { font-size: 1rem; font-weight: 700; color: var(--dark); }
+  .person-card .role { font-size: 0.85rem; color: var(--teal); margin-bottom: 8px; }
+  .person-card a { color: var(--teal); text-decoration: none; font-size: 0.85rem; }
+  .person-card a:hover { text-decoration: underline; }
+  .person-card p { font-size: 0.9rem; color: #3a5a60; line-height: 1.65; margin-top: 8px; }
+  .divider { border: none; border-top: 2px solid var(--mid-grey); margin: 32px 0; }
+  footer { text-align: center; padding: 24px; font-size: 0.8rem; color: #7a9a9a; border-top: 1px solid #dde8e8; background: var(--white); }
+  .feedback-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media(max-width:640px){ .feedback-grid { grid-template-columns: 1fr; } }
+  .feedback-item { border-radius: 10px; padding: 18px 20px; }
+  .feedback-item h4 { font-size: 0.88rem; font-weight: 700; margin-bottom: 8px; }
+  .feedback-item p { font-size: 0.88rem; line-height: 1.6; }
+  .fi-green { background: var(--green); border: 1px solid #8bc34a; }
+  .fi-green h4 { color: #2e7d32; }
+  .fi-amber { background: var(--amber); border: 1px solid #e6c84a; }
+  .fi-amber h4 { color: #7a5f00; }
+  .banner { background: linear-gradient(135deg, var(--teal), #0d8a8e); color: var(--white); border-radius: 10px; padding: 20px 24px; margin-bottom: 20px; }
+  .banner h3 { font-size: 1rem; margin-bottom: 6px; }
+  .banner p { font-size: 0.88rem; opacity: 0.9; }
+  .star-method-box { background: var(--dark); border-radius: 10px; padding: 24px; margin-bottom: 28px; }
+  .star-method-box h3 { color: var(--teal); font-size: 1rem; margin-bottom: 16px; }
+  .star-method-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; }
+  @media(max-width:600px){ .star-method-grid { grid-template-columns: repeat(2,1fr); } }
+  .star-pill { background: rgba(255,255,255,0.08); border-radius: 8px; padding: 14px; text-align: center; }
+  .star-pill .letter { font-size: 1.8rem; font-weight: 700; color: var(--teal); display: block; }
+  .star-pill .word { font-size: 0.82rem; color: #c8dede; margin-top: 4px; }
+  .star-pill .desc { font-size: 0.78rem; color: #9bc4c4; margin-top: 6px; line-height: 1.4; }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-inner">
+    <div class="tag">Confidential Interview Preparation</div>
+    <h1>Jasmine Manders</h1>
+    <div class="subtitle">Supporter Engagement & Fundraising Communications Manager — Go Beyond</div>
+    <div class="hero-meta">
+      <span>Client interview: 2 July 2026, 9.00am</span>
+      <span>Face-to-face — Daleside, Peak District</span>
+      <span>Hiring manager: Sara Shearman, Director of Fundraising</span>
+    </div>
+  </div>
+</div>
+
+<nav class="nav-bar">
+  <div class="nav-inner">
+    <a href="#whythis">Why This Job</a>
+    <a href="#gobeyond">About Go Beyond</a>
+    <a href="#icm">Ice Cream Moments</a>
+    <a href="#sara">Meet Sara & Michelle</a>
+    <a href="#role">The Role</a>
+    <a href="#strengths">Your Strengths</a>
+    <a href="#improve">Areas to Sharpen</a>
+    <a href="#star">STAR Examples</a>
+    <a href="#questions">Questions to Ask</a>
+  </div>
+</nav>
+
+<div class="main">
+
+  <div class="banner" style="margin-top:8px;">
+    <h3>You know this organisation better than anyone else in the room. Now show Sara you can take it further.</h3>
+    <p>You've gone from entry-level trusts assistant to senior fundraiser, promoted twice, in under three years. You secured a five-figure partnership in your first three months with zero prior fundraising experience. That trajectory is real — bring that same energy and honesty into this interview.</p>
+  </div>
+
+  <!-- WHY THIS JOB -->
+  <section class="section" id="whythis">
+    <div class="section-title">Three Questions You Must Nail</div>
+    <div class="section-intro">Sara will almost certainly ask some version of all three. Because you already work at Go Beyond, she will be listening especially closely for genuine reflection rather than rehearsed answers — she wants to understand what's specifically pulling you towards this different discipline, not just a general desire to progress.</div>
+
+    <div class="card card-teal">
+      <h3>❓ "Why do you want this job?"</h3>
+      <p><strong>What Sara is really asking:</strong> You've built real momentum in trusts and foundations. Why step into a different discipline now, and have you thought honestly about what that step actually involves?</p>
+      <p style="margin-top:12px;"><strong>Your answer — in your own words, something like this:</strong></p>
+      <p style="margin-top:8px; font-style:italic; color:#2a5a60;">"Trusts and foundations has given me a genuine grounding in fundraising — understanding a funder's priorities, building a personal relationship even when you're technically applying to an organisation, and being financially accountable for a number. What draws me to this role is the chance to apply that same instinct directly to individuals — our regular givers, our Ice Cream Moments donors, our challenge event participants. I've already been working closely with the Supporter Care side of things through the appeals I've written and the campaigns I've supported, and I can see exactly where the gaps are and exactly what's possible. I want to be the person who closes those gaps. I know individual giving is a different discipline to what I've done so far, and I'm not pretending otherwise — but I learn fast, I'm already inside the organisation, and I think that combination is genuinely valuable."</p>
+      <p style="margin-top:12px;"><strong>Key things to include:</strong> Honesty about the discipline being different from your day-to-day work so far — Sara will respect that more than overclaiming. Specific reference to the appeals and campaigns you've already contributed to. And your track record of learning quickly, backed by the five-figure partnership in your first three months.</p>
+    </div>
+
+    <div class="card card-teal">
+      <h3>❓ "Why Go Beyond specifically?"</h3>
+      <p><strong>What Sara is really asking:</strong> You already work here — so this question is really about whether you understand the organisation's ambition beyond your current role, and whether your motivation is genuine rather than just wanting the next step up.</p>
+      <p style="margin-top:12px;"><strong>Your answer — in your own words, something like this:</strong></p>
+      <p style="margin-top:8px; font-style:italic; color:#2a5a60;">"I've seen first-hand what Go Beyond does for children — I've volunteered on residential breaks and met the families and young people we support directly, not just read about it. That's part of why I'm so invested in seeing the organisation grow. What excites me about this specific role is the scale of opportunity sitting in front of us: 200 to 300 regular givers generating £90,000 with no stewardship in place, a legacy programme that's ready and waiting, an alumni base of over 21,000 children we've supported who we've barely engaged with. I've watched these conversations happen around me for the last three years. I want to be the person actually driving them."</p>
+      <p style="margin-top:12px;"><strong>Key things to include:</strong> Your direct, personal experience volunteering on breaks — this is something no external candidate has and it should come through with real feeling, not as a line item. Specific numbers that show you understand the opportunity, not just the job description.</p>
+      <p style="margin-top:12px;"><strong>Do your research:</strong> Even though you work at Go Beyond, look at the website with fresh eyes before your interview — <a href="https://www.gobeyond.org.uk" target="_blank" style="color:var(--teal);font-weight:600;">gobeyond.org.uk</a>. Read the Ice Cream Moments 2026 page as if you were seeing it for the first time. Sara will notice if your answers sound like internal knowledge rather than genuine outside perspective on the brand.</p>
+    </div>
+
+    <div class="card card-teal">
+      <h3>❓ "What do you know about Go Beyond?"</h3>
+      <p><strong>What Sara is really asking:</strong> Can you talk about the organisation with both insider depth and the strategic, income-focused perspective the role demands — not just operational familiarity?</p>
+      <p style="margin-top:12px;"><strong>Have these facts ready — and use your insider knowledge to go further than any other candidate could:</strong></p>
+      <ul style="margin-top:8px;">
+        <li>Go Beyond provides free residential breaks for vulnerable children — young carers, children in poverty, those facing illness or difficult home circumstances</li>
+        <li>1,100 children received a break in 2025. The 2026 target is 1,250 — the largest in the charity's history</li>
+        <li>Two established centres: Cornwall and Daleside in the Peak District (where your interview is). The new Essex pop-up — the Cardfields project you've been personally fundraising for — is Go Beyond's first South East presence</li>
+        <li>Approximately £1.8 million raised per year entirely from fundraising. No government funding</li>
+        <li>Regular givers: approximately 200-300 people generating £90,000 per year with no stewardship journey in place</li>
+        <li>Ice Cream Moments: £3.50 per virtual ice cream, 2026 target £20,000. Celebrity backers: Louis Theroux, James Acaster, Josh Widdicombe, Jenny Agutter, Alan Titchmarsh — you've worked directly on this campaign, so be ready to speak to it with real detail</li>
+        <li>Legacy programme: built and ready to launch</li>
+        <li>Over 21,000 children have benefited from Go Beyond since it was founded</li>
+        <li>You personally know the team, the database, and the day-to-day operating rhythm — use that to answer with more specificity than any external candidate could offer</li>
+      </ul>
+      <p style="margin-top:12px;"><strong>The fundraiser's observation to add:</strong> <em>"Having worked closely with trusts income, I can see that the individual giving side has real untapped potential — 200 to 300 regular givers with no stewardship is the clearest example. From inside the organisation, I also know that capacity has been the real barrier, not lack of ideas. That's exactly why I think this role needs someone dedicated to it full-time."</em> This shows Sara you understand both the opportunity and the organisational reality behind why it hasn't been actioned yet.</p>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- GO BEYOND -->
+  <section class="section" id="gobeyond">
+    <div class="section-title">About Go Beyond</div>
+    <div class="section-intro">You know Go Beyond better than any other candidate — but it's worth reviewing the full picture in income terms, the way Sara will be thinking about it in this interview.</div>
+
+    <div class="card card-teal">
+      <h3>The Charity at a Glance</h3>
+      <ul>
+        <li><strong>Mission:</strong> Free residential breaks for vulnerable children — young carers, children in poverty, those facing serious illness or difficult home environments</li>
+        <li><strong>Scale:</strong> 1,100 children in 2025. Target 1,250 in 2026 — the largest number in the charity's history</li>
+        <li><strong>Centres:</strong> Cornwall, Daleside in the Peak District, and the new Essex pop-up (Cardfields) — the project you've been personally fundraising for</li>
+        <li><strong>Funding:</strong> Approximately £1.8 million per year, entirely fundraised. No government funding</li>
+        <li><strong>Ambition:</strong> The longer-term goal is to double the number of children served, which means doubling fundraising income</li>
+        <li><strong>Team:</strong> Approximately seven people in fundraising, fully remote. Sara leads the team from Dorset</li>
+      </ul>
+    </div>
+
+    <div class="two-col">
+      <div class="card">
+        <h3>Why this role is an exciting opportunity</h3>
+        <ul>
+          <li>The individual giving, regular giving, and stewardship function has not been properly built yet — you would be the architect of it</li>
+          <li>The legacy programme is ready to launch — infrastructure built, just needs activation</li>
+          <li>21,000 children have benefited since Go Beyond was founded — a ready alumni programme waiting to be activated</li>
+          <li>Celebrity supporters backing Ice Cream Moments — a campaign you already know intimately</li>
+          <li>Friday afternoons off, 28 days holiday plus bank holidays, fully remote</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>What Sara is looking for</h3>
+        <ul>
+          <li>Someone who has owned an income target, understands regular giving or individual giving, and has designed supporter journeys before</li>
+          <li>Curiosity with the database — comfortable segmenting and pulling reports independently</li>
+          <li>A below-the-line marketing mindset — direct marketing that results in income, not just brand awareness</li>
+          <li>Ideas that translate into operational plans — Sara has seen people with great ideas who couldn't deliver them</li>
+          <li>Someone who can manage and develop two direct reports from day one</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="card card-amber">
+      <h3>⚠️ What Sara specifically told you in your prep call — use this</h3>
+      <p>Sara has been clear about what success looks like in the first 12 months: own the database (not just keep it ticking over, but bring a real data strategy — what's wrong with it, what needs fixing, a monthly income-by-segment dashboard, post-campaign analysis that asks "why didn't this raise what we expected?"). Build supporter journeys across every income stream — regular givers, challenge events, ICM donors — and keep testing and improving them. Develop an 18-month to two-year delivery plan covering challenge events, legacies, appeals, and regular givers, with proper forecasting: if a campaign needs to raise X, and the average donation is Y, how many donors do you need, and how many people do you need to target to get there? And by the end of year one, launch the legacy programme. This is the clearest brief any candidate in this process has received — use it directly in your answers.</p>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ICE CREAM MOMENTS -->
+  <section class="section" id="icm">
+    <div class="section-title">Ice Cream Moments — You Already Know This Campaign</div>
+    <div class="section-intro">You've personally written the appeal letter and leaflet, created social content, and run the ads. This is your strongest practical credential — make sure it comes through with real specificity.</div>
+
+    <div class="card">
+      <h3>What you've already contributed</h3>
+      <ul>
+        <li>Written the 2026 ICM appeal letter and accompanying leaflet for the direct mail campaign</li>
+        <li>Created reels and organic social content to support the campaign</li>
+        <li>Run paid ads in the background</li>
+        <li>Know the campaign structure: staged celebrity launches (Louis Theroux, James Acaster, Jenny Agutter, Josh Widdicombe, Alan Titchmarsh), three-month campaign with a different theme each month, monthly emails to individual and regular givers, organic social cadence</li>
+        <li>Already proposed a mid-campaign relaunch idea to your manager — repeating the launch-style approach (new celebrity content, organic social push, email) at the campaign's midpoint to maintain momentum</li>
+      </ul>
+    </div>
+
+    <div class="card card-amber">
+      <h3>💡 Strengthen your answer before 2 July</h3>
+      <p>In your competency interview, your acquisition and ICM answers were strong on activity but light on the financial side — spend, conversion, and return. Before your client interview, prepare a version of your answer that includes real numbers: if ICM needs to raise £20,000 at £3.50 per ice cream, that's roughly 5,714 donations. If you're proposing a mid-campaign ad spend boost, have a rough figure in mind and a rationale for what return you'd expect. Sara's brief is explicit that every spend needs a business case — practising this framing now will make a real difference on the day.</p>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- SARA & MICHELLE -->
+  <section class="section" id="sara">
+    <div class="section-title">Who You're Meeting</div>
+
+    <div class="person-card">
+      <h3>Sara Shearman</h3>
+      <div class="role">Director of Fundraising, Go Beyond — your current line</div>
+      <a href="https://www.linkedin.com/in/sara-shearman-b34a17a4/" target="_blank">→ View Sara's LinkedIn profile</a>
+      <p>Sara already knows you, your work, and your trajectory at Go Beyond. That familiarity is an advantage, but it also means she will expect specificity rather than generalities — she will know if you're describing things you've genuinely thought through versus answers that sound good in the moment. She has been explicit about wanting someone who owns an income target, understands individual giving, and can build supporter journeys independently.</p>
+      <p style="margin-top:8px;">Her biggest concern, based on previous appointments to this role, is people who present well but cannot operationalise their ideas. Every answer you give should include not just what you would do, but how you would actually do it and what you would measure.</p>
+    </div>
+
+    <div class="person-card">
+      <h3>Michelle Farmer</h3>
+      <div class="role">CEO, Go Beyond</div>
+      <a href="https://www.linkedin.com/in/michele-farmer-b9a9803a/" target="_blank">→ View Michelle's LinkedIn profile</a>
+      <p>Michelle is the CEO of Go Beyond and is likely to be present on 2 July. She is the driving force behind the charity's growth ambitions — including the Cardfields project you've been personally fundraising for. She thinks entrepreneurially about Go Beyond's future and will be interested in whether you can speak about the organisation's wider ambitions, not just your own role within it.</p>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- THE ROLE -->
+  <section class="section" id="role">
+    <div class="section-title">Understanding the Role</div>
+    <div class="section-intro">This is a builder role. You already understand the organisation's culture and constraints — now think specifically about what you would own.</div>
+
+    <div class="card">
+      <h3>What you will actually own</h3>
+      <ul>
+        <li><strong>Regular giving:</strong> ~£90,000/year from 200-300 regular givers with no stewardship journey in place. This is the highest-priority income opportunity in the role</li>
+        <li><strong>Individual giving campaigns:</strong> Appeals, email marketing, direct mail, donor communications</li>
+        <li><strong>Ice Cream Moments and other campaigns:</strong> Project managing delivery — work you're already deeply familiar with</li>
+        <li><strong>Challenge event stewardship:</strong> Managing relationships with challenge event participants after sign-up</li>
+        <li><strong>Raiser's Edge database:</strong> Running reports, checking data quality, understanding donor behaviour — beyond the grants monitoring use you currently have</li>
+        <li><strong>Legacy programme:</strong> Ready to launch — your job would be to push it out the door in year one</li>
+        <li><strong>Alumni programme:</strong> 21,000 children have benefited since Go Beyond began. The BBC has already expressed interest in interviews around this</li>
+        <li><strong>Two direct reports:</strong> Including a colleague you already know well — someone you described as full of enthusiasm who is still finding her direction</li>
+      </ul>
+    </div>
+
+    <div class="two-col">
+      <div class="card card-green">
+        <h3>What success at 6 months looks like</h3>
+        <ul>
+          <li>Database running well — data going in accurately, useful reports coming out</li>
+          <li>Two years of campaign planning timelines in place</li>
+          <li>Basic supporter journeys built for regular givers and challenge event participants</li>
+          <li>The team functioning well as a unit</li>
+        </ul>
+      </div>
+      <div class="card card-teal">
+        <h3>What success at 12 months looks like</h3>
+        <ul>
+          <li>Regular giver income beginning to grow from the £90k base</li>
+          <li>ICM and other campaigns running with measurable results</li>
+          <li>Legacy programme launched and generating pledged gifts</li>
+          <li>Supporter Care established as a genuine team</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- STRENGTHS -->
+  <section class="section" id="strengths">
+    <div class="section-title">Your Strengths — Lead With These</div>
+    <div class="section-intro">These are the dimensions where you came out strongest in your assessment. Make sure they come through clearly in every answer.</div>
+
+    <div class="feedback-grid">
+      <div class="feedback-item fi-green">
+        <h4>🏆 You learn fast under real pressure</h4>
+        <p>Joining Go Beyond at entry level with zero prior fundraising experience and securing a five-figure partnership within your first three months — described by the funder as standing out among hundreds of applicants — is a genuinely strong, specific result. Use it directly when Sara asks how quickly you can get up to speed in a new area.</p>
+      </div>
+      <div class="feedback-item fi-green">
+        <h4>🏆 Real grant-income building track record</h4>
+        <p>The Cardfields project started from a cold base of entirely new funders at an estimated 15% success rate. You set a £100,000/month application target, prioritised by capacity and geography, and have raised almost £20,000 with strong partnership potential identified for the future. This is genuine, evidenced income-building under difficult conditions.</p>
+      </div>
+      <div class="feedback-item fi-green">
+        <h4>🏆 Irreplaceable knowledge of Go Beyond</h4>
+        <p>You know the database, the team, the campaigns, and the beneficiary community from direct daily experience — including volunteering on residential breaks. No external candidate can offer this. Use it specifically rather than generally — name campaigns, name the gaps you've personally observed.</p>
+      </div>
+      <div class="feedback-item fi-green">
+        <h4>🏆 Genuine storytelling and stewardship instinct</h4>
+        <p>Your stewardship journey answer — using children's voices, short thank-you videos, tying specific donation amounts to specific impact ("your £3 helped fund Oliver's break") — was your strongest functional answer. This kind of emotionally resonant, low-cost stewardship thinking is exactly what Go Beyond needs.</p>
+      </div>
+      <div class="feedback-item fi-green">
+        <h4>🏆 Honesty and self-awareness</h4>
+        <p>You've been consistently honest about where your experience is strong and where it isn't — about Raiser's Edge, about individual giving, about management. This is a real strength, not a weakness. Sara will trust someone who is upfront about gaps far more than someone who overclaims.</p>
+      </div>
+      <div class="feedback-item fi-green">
+        <h4>🏆 Direct, hands-on involvement in ICM</h4>
+        <p>You wrote the appeal letter, the leaflet, created social content, and ran the ads. This is genuine campaign execution experience — use the specific detail of what you personally produced when this comes up.</p>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- IMPROVE -->
+  <section class="section" id="improve">
+    <div class="section-title">Areas to Address Confidently</div>
+    <div class="section-intro">These are the areas most likely to come up as direct questions. Prepare clear, honest, confident answers — Sara already knows your background, so there's no benefit in avoiding these.</div>
+
+    <div class="card card-amber">
+      <h3>Individual giving experience — the most important gap to address head-on</h3>
+      <p>You have been honest that you have no direct individual giving income experience — your accountability has been in trusts and foundations. Don't avoid this; address it directly and confidently. Your answer should connect what you do know (financial accountability, personal relationship-building even in an institutional context, stewarding funder relationships) to what the role needs, while being clear that you understand this is a genuinely different discipline that you are ready to learn quickly, as you have done before.</p>
+    </div>
+
+    <div class="card card-amber">
+      <h3>Financial modelling — practise this before the day</h3>
+      <p>In your competency interview, your acquisition and ICM answers were strong on activity (segmentation, website investment, social content) but did not include spend figures, conversion assumptions, or return calculations — even after being asked directly about ROI. Before 2 July, practise answering any acquisition or campaign question with a number attached: what would it cost, what return would you expect, and how would you justify that to Sara. This is the single most important thing you can do to strengthen your interview.</p>
+    </div>
+
+    <div class="card card-amber">
+      <h3>Management — be specific about the step up</h3>
+      <p>Your management experience so far has been mentoring junior colleagues rather than formally managing a direct report's performance, and your strongest example involved escalating a difficult situation to your own manager rather than handling it directly. Be honest about this, but also be ready with a specific plan: how would you approach setting expectations with your two direct reports in week one, and what would you do differently if something needed addressing directly rather than escalating it?</p>
+    </div>
+
+    <div class="card card-amber">
+      <h3>Raiser's Edge — beyond grants monitoring</h3>
+      <p>You use RE for grant tracking, but you've been honest that you haven't gone deep into segmentation and query-building. Have a specific plan ready: who would you ask for support, what would you prioritise learning first, and what would you be able to do independently by the end of your first two weeks.</p>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- STAR METHOD -->
+  <section class="section" id="star">
+    <div class="section-title">STAR Method — How to Structure Your Answers</div>
+
+    <div class="star-method-box">
+      <h3>The STAR framework — your guide for every competency question</h3>
+      <div class="star-method-grid">
+        <div class="star-pill"><span class="letter">S</span><span class="word">Situation</span><span class="desc">Set the scene briefly. What was the context? What charity, what programme, what was the starting point?</span></div>
+        <div class="star-pill"><span class="letter">T</span><span class="word">Task</span><span class="desc">What did you need to do? What was the challenge, the objective, the problem to solve?</span></div>
+        <div class="star-pill"><span class="letter">A</span><span class="word">Action</span><span class="desc">What did YOU specifically do? Not "we" — "I". Be concrete and specific about your personal contribution.</span></div>
+        <div class="star-pill"><span class="letter">R</span><span class="word">Result</span><span class="desc">What happened? What was the outcome? Give a number wherever you can. What did you learn?</span></div>
+      </div>
+      <p style="color:#9bc4c4;font-size:0.85rem;margin-top:16px;">Aim for 3–4 minutes per STAR answer. Practice out loud before the day — the difference between a prepared and an unprepared STAR answer is enormous. Don't read from notes; tell the story.</p>
+    </div>
+
+    <div class="star-box">
+      <div class="star-box-header">
+        <span>📢 "Tell me about a time you had to get up to speed quickly in something that wasn't your strongest area"</span>
+        <span class="q">Suggested: Joining Go Beyond with no fundraising background</span>
+      </div>
+      <div class="star-row"><div class="star-label">S</div><div class="star-content">I joined Go Beyond as a Trust Fundraising Assistant with absolutely no prior fundraising experience — it was my first role in the sector entirely. I was working alongside Sara, our Fundraising Director, and circumstantially it was just the two of us, with no Trust Manager or second Trust Officer in place at the time.</div></div>
+      <div class="star-row"><div class="star-label">T</div><div class="star-content">I needed to get up to speed extremely quickly because there was a lot of onus on me as the main person producing funding applications, and trusts and foundations was — and still is — Go Beyond's biggest income stream.</div></div>
+      <div class="star-row"><div class="star-label">A</div><div class="star-content">I approached it by being an absolute sponge — taking on board everything Sara could teach me, learning the ethos and tone of the brand quickly, and within my first week or two she asked me to rewrite our entire case for support. I just kept my head down, asked questions, and committed to learning as fast as I possibly could.</div></div>
+      <div class="star-row"><div class="star-label">R</div><div class="star-content">Within my first three months I secured a five-figure partnership with a major donor we'd never had funding from before — in a highly competitive process where the funder told us my application had stood out among hundreds of applicants. That set the tone for everything since: I was promoted twice within under three years, and secured £200,000 in grants for Go Beyond in 2025 alone.</div></div>
+    </div>
+
+    <div class="star-box">
+      <div class="star-box-header">
+        <span>📢 "Describe a time you built an income stream or supporter base from very little"</span>
+        <span class="q">Suggested: The Cardfields (Essex) project</span>
+      </div>
+      <div class="star-row"><div class="star-label">S</div><div class="star-content">This year I've been leading the fundraising for Cardfields, Go Beyond's new temporary centre in Essex — a brand new venture for the charity aimed at increasing both our capacity and our geographical reach. The challenge was that every single funder in this pipeline was new — we had no existing relationship, no track record with them, and no name recognition in that area.</div></div>
+      <div class="star-row"><div class="star-label">T</div><div class="star-content">My target was £100,000 for the year, against an estimated success rate of roughly 15% for cold new funders — compared with around 90% for funders who already know and fund us. I needed to build a credible pipeline from a genuinely low base in a tough funding climate.</div></div>
+      <div class="star-row"><div class="star-label">A</div><div class="star-content">I set myself a target of submitting £100,000 worth of applications every month, prioritising funders by giving capacity (we need at least £1,000 grants to make sense against our average £1,200-per-break cost) and by geography, focusing on funders local to the South East and London to build a genuinely rooted base of support. I researched each funder's priorities individually and tailored every application rather than sending generic asks, and where relationships started to form, I stewarded them with regular updates, an opinion piece tying our work to a topical issue, and a social media launch.</div></div>
+      <div class="star-row"><div class="star-label">R</div><div class="star-content">We've raised almost £20,000 so far, with several relationships showing strong potential for future, larger partnerships. It's been a slog — a genuinely tough funding climate for a brand new project — but I've recently re-strategised with senior leadership for the year ahead based on what we've learned, including reintroducing more storytelling into our approach.</div></div>
+    </div>
+
+    <div class="star-box">
+      <div class="star-box-header">
+        <span>📢 "Tell me about the most challenging people management or mentoring situation you've faced"</span>
+        <span class="q">Suggested: Managing enthusiasm and direction in a newer colleague</span>
+      </div>
+      <div class="star-row"><div class="star-label">S</div><div class="star-content">As a senior member of the team I mentor more junior colleagues — four people have come through during my time at Go Beyond. One of the more interesting situations has been with a colleague who joined fairly recently and is an absolute ball of enthusiasm — full of energy and ideas.</div></div>
+      <div class="star-row"><div class="star-label">T</div><div class="star-content">My challenge was helping her channel that energy productively — understanding where it was best placed and where it sometimes needed reining in slightly — without ever making her feel demotivated or like her enthusiasm wasn't valued.</div></div>
+      <div class="star-row"><div class="star-label">A</div><div class="star-content">I approached it by adapting to her specific personality and energy level rather than applying a one-size-fits-all approach. I focused on supportive, empathetic conversations about where her energy could have the most impact, while being careful never to squash her motivation. I also made sure I kept open communication with my own manager about anything that needed wider visibility.</div></div>
+      <div class="star-row"><div class="star-label">R</div><div class="star-content">It's an ongoing relationship, but the approach has worked well — she remains motivated and engaged, and I've learned a genuinely useful lesson about adapting management style to the individual rather than a fixed approach. With hindsight, in a formal management context with direct accountability for someone's performance, I know I would need to be more structured and direct earlier on than I have been in this mentoring relationship — and that's something I'd actively build into how I approach managing a direct report in this role.</div></div>
+    </div>
+
+    <div class="star-box">
+      <div class="star-box-header">
+        <span>📢 "How would you build a regular giver acquisition programme from scratch with no ring-fenced budget?"</span>
+        <span class="q">Structured approach — practise this with real numbers attached before 2 July</span>
+      </div>
+      <div class="star-row"><div class="star-label">First</div><div class="star-content">I'd start with the existing supporter base — looking at one-off donors and ICM donors who have already engaged with us once. That's the warmest, lowest-cost route to conversion, because the relationship already exists. I'd segment this group by giving level and engagement history before building anything new.</div></div>
+      <div class="star-row"><div class="star-label">Then</div><div class="star-content">I'd build a coordinated, multi-channel approach — aligned email and social messaging, a clear and simple website journey for anyone who lands on the page wanting to know more, and a consistent monthly cadence of impact-led content rather than constant asks. I'd want to test this on a small segment first before scaling.</div></div>
+      <div class="star-row"><div class="star-label">The number I'd attach</div><div class="star-content">If our 200-300 existing regular givers generate £90,000, that's roughly £300-450 per giver per year. I'd use that figure as the basis for the business case — showing Sara what a modest conversion rate from our warm one-off and ICM donor base could be worth over a 12-month retention period, and proposing a small initial test spend (for example, targeted social ads to our existing email subscribers) with a clear measurement plan before asking for anything larger.</div></div>
+      <div class="star-row"><div class="star-label">Measure</div><div class="star-content">I'd track conversion rate from the warm segment, first-month retention, and cost per acquisition, and report those numbers to Sara monthly — building the case for further investment only once the model is proven at small scale.</div></div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- QUESTIONS TO ASK -->
+  <section class="section" id="questions">
+    <div class="section-title">Questions to Ask Sara and Michelle</div>
+    <div class="section-intro">Good questions show genuine strategic thinking. As an internal candidate, your questions can go deeper than an external candidate's — use that advantage, but make sure they're still forward-looking rather than purely operational.</div>
+
+    <div class="card">
+      <ul>
+        <li><strong>"You've described the first 12 months as building the data strategy, the supporter journeys, and the delivery plan, then launching legacy. If I were in this role, what would you want to see me prioritise in the first 90 days specifically?"</strong></li>
+        <li><strong>"I've been closely involved in Ice Cream Moments this year — what's your honest view on what's worked well so far and what hasn't landed the way we hoped?"</strong></li>
+        <li><strong>"The legacy programme has been ready to launch for some time. From your perspective, what's been the biggest blocker — capacity, confidence in the messaging, or something else?"</strong></li>
+        <li><strong>"What would success look like to you, specifically, at the end of year one — beyond the income numbers?"</strong></li>
+        <li><strong>"How do you see this role working alongside the trusts and corporate teams day to day — is there an expectation of continued cross-team collaboration, or would this sit more independently?"</strong></li>
+      </ul>
+    </div>
+
+    <div class="highlight">
+      <h3>The day before — your checklist</h3>
+      <ul>
+        <li>Practise your acquisition and ICM answers with specific numbers attached — spend, conversion, expected return. This is the single biggest improvement you can make</li>
+        <li>Prepare a clear, honest, confident answer for the individual giving experience gap — don't avoid it, address it directly</li>
+        <li>Have your Cardfields numbers ready: £100,000 target, ~15% success rate from cold funders, almost £20,000 raised, strong partnership potential identified</li>
+        <li>Have your five-figure-partnership-in-three-months story ready in full STAR format — it's your strongest credential</li>
+        <li>Think through a specific plan for how you'd approach managing your two direct reports in week one — not just describing your mentoring style, but a concrete first-week plan</li>
+        <li>Read gobeyond.org.uk and the ICM 2026 page with fresh eyes, as if seeing them for the first time</li>
+        <li>You know this organisation, this team, and this mission better than anyone else interviewing for the role. Let that confidence come through — but pair it with the same honesty you've shown throughout this process.</li>
+      </ul>
+    </div>
+  </section>
+
+</div>
+
+<footer>
+  <p>Prepared for Jasmine Manders · Go Beyond interview 2 July 2026 · Confidential</p>
+</footer>
+
+</body>
+</html>
